@@ -35,7 +35,7 @@ module "consul" {
     ingress_cidr_blocks = "0.0.0.0/0"
 
     key_name = "${var.key_name}"
-    ami = "ami-a05bacc0"
+    ami = "ami-7544b315"
     instance_type = "t2.micro"
 }
 
