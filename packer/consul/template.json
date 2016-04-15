@@ -1,0 +1,31 @@
+{
+    "variables": {
+        "source_ami": "",
+        "region": ""
+    },
+    "builders": [{
+        "type": "amazon-ebs",
+        "region": "{{user `region`}}",
+        "source_ami": "{{user `source_ami`}}",
+        "ssh_pty": true,
+        "instance_type": "t2.micro",
+        "ssh_username": "ec2-user",
+        "ssh_timeout": "5m",
+        "associate_public_ip_address": true,
+        "ami_virtualization_type": "hvm",
+        "ami_description": "Consul Server Image",
+        "ami_name": "consul-{{isotime \"2006-01-02-1504\"}}"
+    }],
+    "provisioners": [
+        {
+            "type": "shell",
+            "start_retry_timeout": "10m",
+            "inline": [
+                "echo \"yum update -y aws-amitools-ec2\" | sudo tee -a /etc/rc.local",
+                "sudo yum update -y",
+                "curl -s https://packagecloud.io/install/repositories/jen20/ops-workshop/script.rpm.sh | sudo bash",
+                "sudo yum install -y consul-aws"
+            ]
+        }
+    ]
+}

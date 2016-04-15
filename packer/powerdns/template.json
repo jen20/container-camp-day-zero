@@ -1,0 +1,32 @@
+{
+    "builders": [
+        {
+            "type": "docker",
+            "image": "debian",
+            "commit": true
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "config/powerdns.sql",
+            "destination": "/tmp/powerdns.sql"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/install.sh"
+        },
+        {
+            "type": "file",
+            "source": "config/pdns.conf",
+            "destination": "/etc/powerdns/pdns.conf"
+        }
+    ],
+    "post-processors": [
+        {
+            "type": "docker-tag",
+            "repository": "jen20/powerdns-tf-acctests",
+            "tag": "1.0"
+        }
+    ]
+}
